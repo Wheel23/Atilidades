@@ -18,16 +18,40 @@ app.get('/aulas',(req,res) => {
 })
 
 
-app.get('/aulas:id',(req,res) => {
+app.get('/aulas/:id',(req,res) => {
     console.log(req.params.id)
-    res.send('qualquer coisa')
+    res.send('dados')
+    res.send(bancoDeDados)
 })
 
-app.post('/aulas', (req, res) => {
+app.post('/aulas/:id', (req, res) => {
     const dados = req.body
     dados['id'] = bancoDeDados.length +1
     bancoDeDados.push(dados)
     res.status(201)
+    res.send('Ok')
+    res.send(bancoDeDados)
+})
+
+app.put('/aulas/:id', (req,res) => {
+    const id = req.params.id
+    const usuario = bancoDeDados.find(user => user.id === id)
+    if(!usuario){
+        res.status(404).json({msg:'usuario nao encontrado!'})
+    }
+    res.send('ok')
+    res.send(bancoDeDados)
+})
+
+app.delete('/aulas/:id', (req,res) => {
+    const id = req.params.id
+    const userIndex = bancoDeDados.findIndex(user => user.id === id)
+    if(userIndex = -1){
+        res.status(404).json({msg: 'Usuario nao encontrado'})
+    }
+    bancoDeDados.splice(userIndex, 1)
+    res.status(204).send()
+    res.send(bancoDeDados)
 })
 
 
