@@ -40,7 +40,7 @@ app.put('/aulas/:id', (req,res) => {
         res.status(404).json({msg:'usuario nao encontrado!'})
     }
     res.send('ok')
-    res.send(bancoDeDados)
+    res.send (bancoDeDados)
 })
 
 app.delete('/aulas/:id', (req,res) => {
@@ -51,7 +51,7 @@ app.delete('/aulas/:id', (req,res) => {
     }
     bancoDeDados.splice(userIndex, 1)
     res.status(204).send()
-    res.send(bancoDeDados)
+    res.send (bancoDeDados)
 })
 
 
