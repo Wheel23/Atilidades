@@ -1,6 +1,5 @@
 const express = require('express')
 const fs = require('fs')
-
 const app = express()
 const PORT = 8000
 app.use(express.json())
@@ -34,7 +33,6 @@ app.post('/aulas/:id', (req, res) => {
     const dados = req.body
     fs.readFile('bancoDeDados.json','utf-8',(err,data) =>{
         if(err){
-            res.status(500)
         }
         const aulas = JSON.parse(data)
         dados['id'] = aulas.length +1
