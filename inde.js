@@ -29,7 +29,7 @@ app.get('/aulas/:id',(req,res) => {
     })
 })
 
-app.post('/aulas/:id', (req, res) => {
+app.post('/aulas', (req, res) => {
     const dados = req.body
     fs.readFile('bancoDeDados.json','utf-8',(err,data) =>{
         if(err){
@@ -37,33 +37,56 @@ app.post('/aulas/:id', (req, res) => {
         const aulas = JSON.parse(data)
         dados['id'] = aulas.length +1
         aulas.push(dados)
-        fs.writeFile('bancoDeDados.json',aulas,(err) => {
+        fs.writeFile('bancoDeDados.json',JSON.stringify(aulas),(err) => {
+            if(err){
             res.status(500).json({msg:"Erro no servidor"})
-        })
-        res.status(201).send(dados)
-        console.log(aulas)
+    }
+    res.status(201).send(dados)
+})
+        
     })
 })
 
 app.put('/aulas/:id', (req,res) => {
-    const id = req.params.id
-    const usuario = bancoDeDados.find(user => user.id === id)
-    if(!usuario){
-        res.status(404).json({msg:'usuario nao encontrado!'})
-    }
-    res.send('ok')
-    res.send (bancoDeDados)
+    fs.readFile('bancoDeDados.json', 'utf-8', (err,data) => {
+        const aulas = JSON.parse(data)
+        const aulaIndex = aulas.findIndex(aula => aula.id == id);
+        if(aulaIndex !== -1){
+            const dados =  req.body;
+            for(key in dados){
+                aulas[aulaIndex][key] = dados[key]
+            }
+            fs.writeFile('bancoDeDados', JSON.stringify(aulas), (err) => {
+                if(err){
+                    res.status(500).json({msg: 'erro no servidor'})
+                }
+                res.status(201).json(dados)
+            })
+        }res.status(404).json({msg: 'Aula não encontrada'})
+
+    })
 })
+ 
 
 app.delete('/aulas/:id', (req,res) => {
-    const id = req.params.id
-    const userIndex = bancoDeDados.findIndex(user => user.id === id)
-    if(userIndex = -1){
-        res.status(404).json({msg: 'Usuario nao encontrado'})
-    }
-    bancoDeDados.splice(userIndex, 1)
-    res.status(204).send()
-    res.send (bancoDeDados)
+   fs.readFile('bancoDeDados', 'utf-8', (err,data) => {
+    if(err){
+        res.status(500).json({msg: 'erro no servir'})
+   }
+   const aulas = JSON.parse(data)
+   const aulaIndex = aulas.findIndex(aula => aula.id == id);
+   if(aulaIndex !== -1){
+    aulas.splice(aulaIndex, 1)
+    fs.writeFile('bancoDeDados.json', JSON.stringify(aulas), (err) => {
+        if(err){
+            res.status(500).json({msg:'Erro no servidor'})
+        }
+        res.status(204).send()
+    })
+   }else{
+    res.status(404).json({msg:"Not Found"})
+   }
+   })
 })
 
 

@@ -1,8 +1,1 @@
-[
-  {
-    "id": 1,
-    "nome": "Luiz",
-    "Area": "Técnica",
-    "Curso": "Desenvolvimento de Sistemas"
-  }
-]
+[{"id":1,"nome":"Luiz","Area":"Técnica","Curso":"Desenvolvimento de Sistemas"},{"professor":"Ra","Turma":"3B","Area":"Tecnico em desenvolvimento de sistemas","id":2},{"professor":"Ro","Turma":"3C","Area":"Tec em desenvolvimento de sistemas","id":3}]
